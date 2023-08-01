@@ -1,0 +1,14 @@
+{
+	"LionStudios.Suite.Analytics.LionAnalytics": {
+		"heartbeatInterval": 60
+	},
+	"LionStudios.Suite.Core.LionCore": {
+		"_UseMultiDexSupport": true,
+		"_UseProGuard": true,
+		"_OverrideGradlePluginVersion": false,
+		"_GradlePluginOverride": ""
+	},
+	"LionStudios.Suite.Debugging.LionDebug": {
+		"debugLogLevel": 4
+	}
+}

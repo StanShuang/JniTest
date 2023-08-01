@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".android.view.CustomizeActivity">
+    <com.example.stan.jnitest.android.view.CircleView
+        android:id="@+id/circle_view"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:background="@color/black"
+        android:layout_margin="20dp"
+        app:circle_color="@color/teal_200"
+        android:padding="10dp"
+        tools:ignore="MissingConstraints" />
+
+</LinearLayout>

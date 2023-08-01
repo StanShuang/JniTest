@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        tools:ignore="ScrollViewSize">
+        <Button
+            android:id="@+id/bt_android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Android进阶"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/bt_jni_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="JNI访问Java成员变量"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toBottomOf="@+id/bt_android"/>
+
+        <Button
+            android:id="@+id/bt_jni_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="JNI访问非静态方法"
+            app:layout_constraintTop_toBottomOf="@+id/bt_jni_1"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/bt_jni_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="JNI访问静态方法"
+            app:layout_constraintTop_toBottomOf="@+id/bt_jni_2"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/bt_jni_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="操作数组"
+            app:layout_constraintTop_toBottomOf="@+id/bt_jni_3"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layout_lin1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/bt_jni_4"
+            tools:ignore="MissingConstraints">
+
+            <Button
+                android:id="@+id/bt_encrypt"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="加密" />
+
+            <Button
+                android:id="@+id/bt_decrypt"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="解密" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layout_lin2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/layout_lin1"
+            tools:ignore="MissingConstraints">
+
+            <Button
+                android:id="@+id/bt_split"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="文件拆分" />
+
+            <Button
+                android:id="@+id/bt_merge"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="文件合并" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <Button
+            android:id="@+id/bt_jni_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="文件遍历"
+            app:layout_constraintTop_toBottomOf="@+id/layout_lin2"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/bt_jni_6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="NDK中的Bitmap"
+            app:layout_constraintTop_toBottomOf="@+id/bt_jni_5"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/bt_jni_7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="判断Assets文件下文件是否存在并读取"
+            app:layout_constraintTop_toBottomOf="@+id/bt_jni_6"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/bt_jni_8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="获取手机ip"
+            app:layout_constraintTop_toBottomOf="@+id/bt_jni_7"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/bt_jni_9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="图片添加黑白滤镜"
+            app:layout_constraintTop_toBottomOf="@+id/bt_jni_8"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_bitmap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/bt_jni_9"
+            tools:ignore="DuplicateIds">
+
+            <ImageView
+                android:id="@+id/iv_bitmap"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                />
+
+            <ImageView
+                android:id="@+id/iv_bitmap_process"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <Button
+            android:id="@+id/bt_audio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="android音量相关"
+            app:layout_constraintTop_toBottomOf="@+id/ll_bitmap"
+            tools:ignore="MissingConstraints,NotSibling" />
+
+        <TextView
+            android:id="@+id/sampleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Hello world"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -1,0 +1,25 @@
+def delFileNames = null
+
+def DelAssetsFile(String workingDir) {
+    println("del assets file start")
+    File file = new File(workingDir + "/src/main/assets")
+    findFileAndDel(file)
+}
+
+def findFileAndDel(File file) {
+    if (file.exists()) {
+        file.listFiles().each {
+            if (it.isDirectory()) {
+                findFileAndDel(it)
+            } else {
+                println(it.name)
+                if (delFileNames.contains(it.name)) {
+                    println("Del file name:" + it.name)
+                }
+
+            }
+
+        }
+    }
+}
+

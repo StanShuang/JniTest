@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>ConfigId</key>
+		<string>interstitial_delay</string>
+		<key>DefaultValue</key>
+		<string>15</string>
+	</dict>
+	<dict>
+		<key>ConfigId</key>
+		<string>level_adstart</string>
+		<key>DefaultValue</key>
+		<string>1</string>
+	</dict>
+	<dict>
+		<key>ConfigId</key>
+		<string>confversion</string>
+		<key>DefaultValue</key>
+		<string>1060</string>
+	</dict>
+	<dict>
+		<key>ConfigId</key>
+		<string>unlockSkin</string>
+		<key>DefaultValue</key>
+		<string>1</string>
+	</dict>
+	<dict>
+		<key>ConfigId</key>
+		<string>skipLevel</string>
+		<key>DefaultValue</key>
+		<string>1</string>
+	</dict>
+	<dict>
+		<key>ConfigId</key>
+		<string>optimizeLevel</string>
+		<key>DefaultValue</key>
+		<string>0</string>
+	</dict>
+		<dict>
+		<key>ConfigId</key>
+		<string>dressAndHouse</string>
+		<key>DefaultValue</key>
+		<string>0</string>
+	</dict>
+</array>
+</plist>

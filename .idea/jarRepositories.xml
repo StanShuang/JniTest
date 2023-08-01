@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven44" />
+      <option name="name" value="maven44" />
+      <option name="url" value="http://fan-adn.github.io/nendSDK-Android-lib/library" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven47" />
+      <option name="name" value="maven47" />
+      <option name="url" value="https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven46" />
+      <option name="name" value="maven46" />
+      <option name="url" value="https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_china" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven7" />
+      <option name="name" value="maven7" />
+      <option name="url" value="https://jitpack.io" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven48" />
+      <option name="name" value="maven48" />
+      <option name="url" value="https://dl.google.com/dl/android/maven2/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven24" />
+      <option name="name" value="maven24" />
+      <option name="url" value="https://verve.jfrog.io/artifactory/verve-gradle-release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven41" />
+      <option name="name" value="maven41" />
+      <option name="url" value="https://android-sdk.is.com/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven52" />
+      <option name="name" value="maven52" />
+      <option name="url" value="https://gitee.com/waves_wb/ProbeSdk/raw/master/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven22" />
+      <option name="name" value="maven22" />
+      <option name="url" value="https://sdk.tapjoy.com/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven23" />
+      <option name="name" value="maven23" />
+      <option name="url" value="https://artifact.bytedance.com/repository/Volcengine/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven12" />
+      <option name="name" value="maven12" />
+      <option name="url" value="https://artifact.bytedance.com/repository/pangle" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven37" />
+      <option name="name" value="maven37" />
+      <option name="url" value="http://nexus.webeyemobi.com/repository/maven-public" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven31" />
+      <option name="name" value="maven31" />
+      <option name="url" value="https://bitbucket.org/maven-fission/fission/raw/release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven45" />
+      <option name="name" value="maven45" />
+      <option name="url" value="https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_support" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven5" />
+      <option name="name" value="maven5" />
+      <option name="url" value="https://bitbucket.org/maven-richox/richox/raw/release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven15" />
+      <option name="name" value="maven15" />
+      <option name="url" value="https://adgeneration.github.io/ADG-Android-SDK/repository" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven40" />
+      <option name="name" value="maven40" />
+      <option name="url" value="http://maven.display.io/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven16" />
+      <option name="name" value="maven16" />
+      <option name="url" value="https://imobile-maio.github.io/maven" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven36" />
+      <option name="name" value="maven36" />
+      <option name="url" value="https://developer.huawei.com/repo/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="https://bitbucket.org/maven-taurusxads/taurusxads/raw/release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven38" />
+      <option name="name" value="maven38" />
+      <option name="url" value="http://nexus.webeyemobi.com/repository/webeye" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven53" />
+      <option name="name" value="maven53" />
+      <option name="url" value="https://jcenter.bintray.com/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven27" />
+      <option name="name" value="maven27" />
+      <option name="url" value="http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven6" />
+      <option name="name" value="maven6" />
+      <option name="url" value="https://repo1.maven.org/maven2/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven8" />
+      <option name="name" value="maven8" />
+      <option name="url" value="https://repo.maven.apache.org/maven2/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven3" />
+      <option name="name" value="maven3" />
+      <option name="url" value="https://bitbucket.org/maven-gametools/gametools/raw/release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven" />
+      <option name="name" value="maven" />
+      <option name="url" value="https://bitbucket.org/sdkcenter/sdkcenter/raw/release" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven11" />
+      <option name="name" value="maven11" />
+      <option name="url" value="https://maven.display.io/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven15" />
+      <option name="name" value="maven15" />
+      <option name="url" value="https://fan-adn.github.io/nendSDK-Android-lib/library" />
+    </remote-repository>
+  </component>
+</project>
