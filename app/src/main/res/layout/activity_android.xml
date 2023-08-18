@@ -64,6 +64,12 @@
         android:layout_height="wrap_content"
         android:text="发送邮件"
         app:layout_constraintTop_toBottomOf="@+id/bt_scoped_storage_write"/>
+    <Button
+        android:id="@+id/bt_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取语言地区"
+        app:layout_constraintTop_toBottomOf="@+id/bt_send_email"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

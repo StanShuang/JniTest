@@ -25,6 +25,10 @@ import java.io.File
 import java.util.*
 import java.util.regex.Pattern
 import android.net.Uri
+import android.view.MotionEvent
+import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
+import com.example.stan.jnitest.utils.LightSettingUtil
+import java.io.ObjectStreamClass
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -34,7 +38,26 @@ class MainActivity : AppCompatActivity() {
     }
     private val file_name = "testJni.txt"
     private lateinit var encryptPath: String
+    private lateinit var lightSettingUtil: LightSettingUtil
 
+    //多个权限
+    private val requestPermissionsLauncher =
+        registerForActivityResult(RequestMultiplePermissions()) {
+            if (it[Manifest.permission.READ_MEDIA_IMAGES] != null && it[Manifest.permission.POST_NOTIFICATIONS] != null) {
+                if (Objects.requireNonNull(it[Manifest.permission.READ_MEDIA_IMAGES]) == true) {
+                    Log.d("MainActivity", "READ_MEDIA_IMAGES is get..")
+                } else {
+                    Log.d("MainActivity", "READ_MEDIA_IMAGES is not get..")
+                }
+                if (Objects.requireNonNull(it[Manifest.permission.POST_NOTIFICATIONS]) == true) {
+                    Log.d("MainActivity", "POST_NOTIFICATIONS is get..")
+                } else {
+                    Log.d("MainActivity", "POST_NOTIFICATIONS is not get..")
+                }
+            }
+        }
+
+    //单个权限
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
@@ -48,6 +71,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("MainActivity", "isTaskRoot=$isTaskRoot")
+        lightSettingUtil = LightSettingUtil(this)
         BASE_URL = getExternalFilesDir("file")!!.absolutePath
         Log.d("MainActivity", "BASE_URL=${BASE_URL}")
         encryptPath = BASE_URL + "encryption_" + file_name
@@ -143,7 +167,34 @@ class MainActivity : AppCompatActivity() {
 
     private fun setPermission() {
         if (Build.VERSION.SDK_INT >= 33) {
-            requestPermissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+            when {
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    // 需要权限的API才可以使用。
+                }
+
+                shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
+                    // 在教育用户界面中，向用户解释为什么您的应用程序需要这个
+                    // 允许特定功能按预期运行，以及什么
+                    // 如果被拒绝，功能将被禁用。在此 UI 中，包括
+                    // 让用户继续的“取消”或“不用了”按钮
+                    // 在未授予权限的情况下使用您的应用程序。
+                    Log.d("MainActivity", "向用户解释为什么您的应用程序需要这个")
+                }
+
+                else -> {
+                    requestPermissionsLauncher.launch(
+                        arrayOf(
+                            Manifest.permission.POST_NOTIFICATIONS,
+                            Manifest.permission.READ_MEDIA_IMAGES
+                        )
+                    )
+                }
+            }
+
+
         } else {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED
@@ -182,11 +233,28 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Log.d("MainActivity", "onResume")
+        lightSettingUtil.startSleepTask(lightSettingUtil.danyTime)
+        lightSettingUtil.setLastTimeOnTouch()
     }
 
     override fun onStop() {
         super.onStop()
         Log.d("MainActivity", "onStop")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("MainActivity", "onPause")
+        lightSettingUtil.stopSleepTask()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        Log.d("MainActivity", "dispatchTouchEvent")
+        lightSettingUtil.setLastTimeOnTouch()
+        if (lightSettingUtil.currentLight.toInt() == 1) {
+            lightSettingUtil.startSleepTask(lightSettingUtil.danyTime)
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -197,7 +265,7 @@ class MainActivity : AppCompatActivity() {
         val appLinkIntent: Intent = intent!!
         val appLinkAction: String? = appLinkIntent.action
         val appLinkData: Uri? = appLinkIntent.data
-        if(appLinkData != null){
+        if (appLinkData != null) {
             val recipeId = appLinkData.lastPathSegment
         }
     }

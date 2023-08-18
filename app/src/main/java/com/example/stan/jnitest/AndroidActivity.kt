@@ -2,7 +2,6 @@ package com.example.stan.jnitest
 
 import android.animation.IntEvaluator
 import android.animation.ValueAnimator
-import android.content.ComponentName
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
@@ -10,7 +9,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.PixelFormat
 import android.net.Uri
 import android.os.Build
@@ -25,12 +23,13 @@ import android.view.Gravity
 import android.view.WindowManager
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.example.stan.jnitest.android.view.CustomizeActivity
 import com.example.stan.jnitest.android.view.MyAppWidgetProvider
 import com.example.stan.jnitest.databinding.ActivityAndroidBinding
 import com.example.stan.jnitest.mvvm.test.MVVMTestActivity
 import com.example.stan.jnitest.utils.AssetsFileUtils
-import java.net.URI
+import com.example.stan.jnitest.utils.TestUtils
+import org.json.JSONException
+import org.json.JSONObject
 import kotlin.concurrent.thread
 
 
@@ -49,7 +48,7 @@ class AndroidActivity : AppCompatActivity() {
             packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
             val intent: Intent? =
                 packageManager.getLaunchIntentForPackage("com.supertapx.lovedots.vivo") //这里参数就是你要打开的app的包名
-                intent!!.putExtra("KEY", "");
+            intent!!.putExtra("KEY", "");
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
             startActivity(intent)
 //            val intent = Intent(Intent.ACTION_MAIN)
@@ -65,7 +64,6 @@ class AndroidActivity : AppCompatActivity() {
         }
 
         //启动另一个app
-
 
 
         //注册点击事件
@@ -158,11 +156,19 @@ class AndroidActivity : AppCompatActivity() {
 
         binding.btScopedStorage.setOnClickListener {
             //TODO 代码暂时还有问题
-            val cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, "${MediaStore.MediaColumns.DATE_ADDED} desc")
+            val cursor = contentResolver.query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null,
+                null,
+                null,
+                "${MediaStore.MediaColumns.DATE_ADDED} desc"
+            )
             if (cursor != null) {
                 while (cursor.moveToNext()) {
-                    val id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID))
-                    val uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
+                    val id =
+                        cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID))
+                    val uri =
+                        ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
                     Log.i(LOG_TAG, "$uri-----${uri.encodedPath}")
                 }
                 cursor.close()
@@ -171,7 +177,7 @@ class AndroidActivity : AppCompatActivity() {
 
         binding.btScopedStorageWrite.setOnClickListener {
             val bitmap = AssetsFileUtils.loadBitmap(this)
-            addBitmapToAlbum(bitmap,"w2.jpg")
+            addBitmapToAlbum(bitmap, "w2.jpg")
         }
 
         binding.btSendEmail.setOnClickListener {
@@ -179,13 +185,34 @@ class AndroidActivity : AppCompatActivity() {
             emailIntent.type = "plain/text"/*邮件标题*/
 //            emailIntent.type = "image/*"
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Test")
-            emailIntent.putExtra(Intent.EXTRA_EMAIL,arrayOf("contact@libii.com"))
-            emailIntent.putExtra(Intent.EXTRA_TEXT, "This is Test Email") //发送的内容
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("contact@libii.com"))
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "This is Test Email" + "\n" + "1.0.2") //发送的内容
             emailIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 
             startActivity(Intent.createChooser(emailIntent, "分享"))
         }
 
+        binding.btArea.setOnClickListener {
+            val language = resources.configuration.locale.language
+            val country = resources.configuration.locale.country
+            Log.i(LOG_TAG, "Language is: $language;Country is:$country")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                val language1 = resources.configuration.locales.get(0).language
+                val country1 = resources.configuration.locales.get(0).country
+                Log.i(LOG_TAG, "Use Locales---Language is: $language1;Country is:$country1")
+            }
+            val str = "onValidateInAppFailure called: {\"result\":false}"
+            val childrenStr = str.substring(str.indexOf(":") + 1)
+            val isInvalidReceipt = try {
+                JSONObject(childrenStr)
+                true
+            } catch (e: JSONException) {
+                e.printStackTrace()
+                false
+            }
+            Log.i(LOG_TAG, childrenStr + "isInvalidReceipt:$isInvalidReceipt")
+            Log.i(LOG_TAG, "double 精度" + TestUtils.getDouble())
+        }
 
     }
 
@@ -196,7 +223,10 @@ class AndroidActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DCIM)
         } else {
-            values.put(MediaStore.MediaColumns.DATA, "${Environment.getExternalStorageDirectory().path}/${Environment.DIRECTORY_DCIM}/$displayName")
+            values.put(
+                MediaStore.MediaColumns.DATA,
+                "${Environment.getExternalStorageDirectory().path}/${Environment.DIRECTORY_DCIM}/$displayName"
+            )
         }
         val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
         if (uri != null) {
