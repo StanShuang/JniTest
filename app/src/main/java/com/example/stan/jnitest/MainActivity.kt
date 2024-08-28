@@ -27,7 +27,9 @@ import java.util.regex.Pattern
 import android.net.Uri
 import android.view.MotionEvent
 import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
+import androidx.annotation.RequiresApi
 import com.example.stan.jnitest.utils.LightSettingUtil
+import com.example.stan.jnitest.utils.TestUtils
 import java.io.ObjectStreamClass
 
 class MainActivity : AppCompatActivity() {
@@ -67,6 +69,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("SetTextI18n", "SdCardPath")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +81,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setPermission()
+        Log.d("MainActivity", ((7000.00.toDouble() / 1000000)).toString())
         Log.d("MainActivity", "androidId=${getUniqueId(this)}")
         val pattern: Pattern = Pattern.compile("^[0|-]+$")
         if (pattern.matcher("0").matches()) {
@@ -90,8 +94,20 @@ class MainActivity : AppCompatActivity() {
         val jniNative = JniNative()
         val jniBitmapAction = JniBitmapAction()
         binding.btJni1.setOnClickListener {
-            jniNative.accessField()
-            binding.sampleText.text = "after:" + jniNative.showText
+//            jniNative.accessField()
+//            binding.sampleText.text = "after:" + jniNative.showText
+            Log.d("MainActivity", TestUtils.getStringValue())
+//            val intent = TestUtils.createIntentForGooglePlay(this)
+//            if (intent.resolveActivity(packageManager) != null) {
+//                startActivity(intent)
+//            } else {
+//                Toast.makeText(this, "请安装google play", Toast.LENGTH_LONG).show()
+//            }
+//            TestUtils.isMainTread()
+//            TestUtils.testFloat()
+            val age = getUserAge("500239203006302550")
+            Log.d("MainActivity", "age is $age")
+
         }
 
         binding.btJni2.setOnClickListener {
@@ -147,8 +163,7 @@ class MainActivity : AppCompatActivity() {
         binding.ivBitmap.setImageBitmap(bitmap)
         binding.btJni9.setOnClickListener {
             val bitProcess = bitmap.copy(
-                Bitmap.Config.ARGB_8888,
-                true
+                Bitmap.Config.ARGB_8888, true
             )
             jniBitmapAction.nativeProcessBitmap(bitProcess)
             binding.ivBitmapProcess.setImageBitmap(bitProcess)
@@ -169,8 +184,7 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= 33) {
             when {
                 ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.POST_NOTIFICATIONS
+                    this, Manifest.permission.POST_NOTIFICATIONS
                 ) == PackageManager.PERMISSION_GRANTED -> {
                     // 需要权限的API才可以使用。
                 }
@@ -196,13 +210,14 @@ class MainActivity : AppCompatActivity() {
 
 
         } else {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
             ) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     requestPermissions(
-                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                        0x1024
+                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0x1024
                     )
                     return
                 }
@@ -298,6 +313,37 @@ class MainActivity : AppCompatActivity() {
         sb.append(Build.USER.length % 10)
         pseudoId = UUID(sb.hashCode().toLong(), Build.FINGERPRINT.hashCode().toLong()).toString()
         return pseudoId
+    }
+
+    private fun getUserAge(idCard: String): Int? {
+        return try {
+            // 检查身份证号码长度是否正确
+            if (idCard.length != 18) {
+                throw IllegalArgumentException("Invalid ID card number.")
+            }
+
+            // 提取出生年、月、日
+            val year = idCard.substring(6, 10).toInt()
+            val month = idCard.substring(10, 12).toInt() - 1 // Calendar月份从0开始
+            val day = idCard.substring(12, 14).toInt()
+
+            // 获取当前日期
+            val today = Calendar.getInstance()
+
+            // 设置出生日期
+            val birthDate = Calendar.getInstance()
+            birthDate.set(year, month, day)
+
+            // 计算年龄
+            var age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR)
+            if (today.get(Calendar.DAY_OF_YEAR) < birthDate.get(Calendar.DAY_OF_YEAR)) {
+                age-- // 如果今天的日期在生日之前，则年龄减1
+            }
+            age
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null // 返回null表示出现错误，如身份证号格式不正确或其他异常
+        }
     }
 
 }

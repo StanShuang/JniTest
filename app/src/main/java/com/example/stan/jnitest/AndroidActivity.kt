@@ -22,14 +22,27 @@ import android.util.Log
 import android.view.Gravity
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.stan.jnitest.android.view.MyAppWidgetProvider
 import com.example.stan.jnitest.databinding.ActivityAndroidBinding
 import com.example.stan.jnitest.mvvm.test.MVVMTestActivity
 import com.example.stan.jnitest.utils.AssetsFileUtils
 import com.example.stan.jnitest.utils.TestUtils
+import com.example.stan.jnitest.utils.datastore.preferences.EXAMPLE_COUNTER
+import com.example.stan.jnitest.utils.datastore.preferences.EasyDataStore
+import com.example.stan.jnitest.utils.datastore.preferences.PDSUtils
+import com.example.stan.jnitest.utils.datastore.preferences.PDSUtils.exampleCounterFlow
+import com.example.stan.jnitest.utils.datastore.preferences.PDSUtils.incrementCounter
+import com.example.stan.jnitest.utils.datastore.preferences.dataStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
+import java.math.BigInteger
+import java.security.SecureRandom
 import kotlin.concurrent.thread
 
 
@@ -42,6 +55,7 @@ class AndroidActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAndroidBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.constraint.setBackgroundResource(TestUtils.getDrawable(this))
         binding.btView.setOnClickListener {
 //            val intent = Intent(this, CustomizeActivity::class.java)
 //            startActivity(intent)
@@ -60,7 +74,6 @@ class AndroidActivity : AppCompatActivity() {
 //            bundle.putString("KEY", "你好")
 //            intent.putExtras(bundle)
 //            startActivity(intent)
-
         }
 
         //启动另一个app
@@ -212,6 +225,27 @@ class AndroidActivity : AppCompatActivity() {
             }
             Log.i(LOG_TAG, childrenStr + "isInvalidReceipt:$isInvalidReceipt")
             Log.i(LOG_TAG, "double 精度" + TestUtils.getDouble())
+        }
+
+        binding.btSave.setOnClickListener {
+            EasyDataStore.putData("name", "stan")
+        }
+
+        binding.btGet.setOnClickListener {
+            val data = EasyDataStore.getData("name", "")
+            Toast.makeText(this, "name:$data", Toast.LENGTH_LONG).show()
+        }
+
+        binding.btRandom.setOnClickListener {
+            val value = BigInteger(64, SecureRandom()).toString(16)
+            Log.i(LOG_TAG, "随机码为:$value")
+        }
+
+        binding.btKey.setOnClickListener {
+            val keyMap = TestUtils.genKeyPair()
+            val publicKey = TestUtils.getPublicKey(keyMap)
+            val privateKey = TestUtils.getPrivateKey(keyMap)
+            Log.i(LOG_TAG, "公钥:$publicKey  ;私钥:$privateKey")
         }
 
     }

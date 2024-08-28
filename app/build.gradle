@@ -58,7 +58,7 @@ android {
 
 
     task delAssetsFileTask(type: DefaultTask) {
-        println(buildFile.getParent() +"-------------------------")
+        println(buildFile.getParent() + "-------------------------")
         if (delFileNames != null) {
             if (isBundle()) {
                 DelAssetsFile(projectDir.toString().replaceAll('\\\\', '/'), delFileNames as String[])
@@ -67,15 +67,15 @@ android {
 
 
     }
-    task changeFileNameTask{
-        doLast{
+    task changeFileNameTask {
+        doLast {
             def aabPath = "${buildFile.getParent()}/build/outputs/bundle/release/app-release.aab"
             def aabChangeName = "${project.rootDir.path}/aab"
             println("${aabChangeName} + ${aabPath}")
-            if(new File(aabPath).exists()){
+            if (new File(aabPath).exists()) {
                 println("file is exists")
             }
-            copy{
+            copy {
                 from aabPath
                 into aabChangeName
                 rename {
@@ -93,6 +93,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation files('libs/commons-codec-1.16.0.jar')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -105,6 +106,15 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
 
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
+
+    //Preferences DataStore
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    //Proto DataStore
+    implementation "androidx.datastore:datastore-core:1.0.0"
+
+    // 第三方RatingBar,解决适配问题
+    implementation 'me.zhanghai.android.materialratingbar:library:1.4.0'
 }
 
 

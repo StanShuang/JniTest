@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity"
-        tools:ignore="ScrollViewSize">
+        tools:ignore="ScrollViewSize"
+        android:id="@+id/constraint">
         <Button
             android:id="@+id/bt_android"
             android:layout_width="match_parent"
