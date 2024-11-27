@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Base64;
@@ -25,6 +26,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
 import java.util.Map;
 import java.security.Key;
+import java.util.UUID;
 
 /**
  * @Author Stan
@@ -142,6 +144,32 @@ public class TestUtils {
 
     public static int getDrawable(Context context) {
         return context.getResources().getIdentifier("bitmap_hot", "drawable", context.getPackageName());
+    }
+
+    public static String generateDeviceIdentifiers() {
+        int abisLength;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            abisLength = Build.SUPPORTED_ABIS.length;
+        } else {
+            abisLength = Build.CPU_ABI.length();
+        }
+
+        String devIdShort = "35" +
+                Build.BOARD.length() % 10 + Build.BRAND.length() % 10 +
+
+                abisLength % 10 + Build.DEVICE.length() % 10 +
+
+                Build.DISPLAY.length() % 10 + Build.HOST.length() % 10 +
+
+                Build.ID.length() % 10 + Build.MANUFACTURER.length() % 10 +
+
+                Build.MODEL.length() % 10 + Build.PRODUCT.length() % 10 +
+
+                Build.TAGS.length() % 10 + Build.TYPE.length() % 10 +
+
+                Build.USER.length() % 10; //13 位
+
+        return new UUID(devIdShort.hashCode(), Build.FINGERPRINT.hashCode()).toString();
     }
 
 }

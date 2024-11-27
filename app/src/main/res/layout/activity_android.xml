@@ -1,153 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AndroidActivity"
-    android:id="@+id/constraint">
+    tools:context=".AndroidActivity">
 
-    <Button
-        android:visibility="invisible"
-        android:id="@+id/bt_view"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="自定义View"
-        tools:ignore="MissingConstraints" />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:visibility="invisible"
-        android:id="@+id/et_drawable"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/drawable_layer_list"
-        android:hint="使用Drawable改变控件样式"
-        app:layout_constraintTop_toBottomOf="@+id/bt_view"
-        tools:ignore="UnknownIdInLayout" />
-
-    <Button
-        android:id="@+id/bt_anim"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:text="属性动画"
-        app:layout_constraintTop_toBottomOf="@+id/et_drawable"
-        tools:ignore="MissingConstraints,UnknownId" />
-
-    <Button
-        android:id="@+id/bt_thread_local"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="ThreadLocal"
-        app:layout_constraintTop_toBottomOf="@+id/bt_anim" />
-
-    <Button
-        android:id="@+id/bt_crash_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="异常收集"
-        app:layout_constraintTop_toBottomOf="@+id/bt_thread_local" />
-
-    <Button
-        android:id="@+id/bt_coroutine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="协程"
-        android:visibility="invisible"
-        app:layout_constraintTop_toBottomOf="@+id/bt_crash_test" />
-
-    <Button
-        android:id="@+id/bt_scoped_storage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="获取相册图片"
-        app:layout_constraintTop_toBottomOf="@+id/bt_coroutine" />
-
-    <Button
-        android:id="@+id/bt_scoped_storage_write"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="写图片到相册"
-        app:layout_constraintTop_toBottomOf="@+id/bt_scoped_storage" />
-
-    <Button
-        android:id="@+id/bt_send_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="发送邮件"
-        app:layout_constraintTop_toBottomOf="@+id/bt_scoped_storage_write" />
-
-    <Button
-        android:id="@+id/bt_area"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="获取语言地区"
-        app:layout_constraintTop_toBottomOf="@+id/bt_send_email" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:visibility="gone"
-        android:id="@+id/layout_lin1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/bt_area"
-        tools:ignore="MissingConstraints">
 
         <Button
-            android:id="@+id/bt_save"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="保存" />
+            android:id="@+id/bt_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="自定义View"
+            android:visibility="invisible"
+            tools:ignore="MissingConstraints" />
+
+        <EditText
+            android:id="@+id/et_drawable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/drawable_layer_list"
+            android:hint="使用Drawable改变控件样式"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@+id/bt_view"
+            tools:ignore="UnknownIdInLayout" />
 
         <Button
-            android:id="@+id/bt_get"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="获取" />
+            android:id="@+id/bt_anim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="属性动画"
+            app:layout_constraintTop_toBottomOf="@+id/et_drawable"
+            tools:ignore="MissingConstraints,UnknownId" />
+
+        <Button
+            android:id="@+id/bt_thread_local"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ThreadLocal"
+            app:layout_constraintTop_toBottomOf="@+id/bt_anim" />
+
+        <Button
+            android:id="@+id/bt_crash_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="异常收集"
+            app:layout_constraintTop_toBottomOf="@+id/bt_thread_local" />
+
+        <Button
+            android:id="@+id/bt_coroutine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="协程"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@+id/bt_crash_test" />
+
+        <Button
+            android:id="@+id/bt_scoped_storage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="获取相册图片"
+            app:layout_constraintTop_toBottomOf="@+id/bt_coroutine" />
+
+        <Button
+            android:id="@+id/bt_scoped_storage_write"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="写图片到相册"
+            app:layout_constraintTop_toBottomOf="@+id/bt_scoped_storage" />
+
+        <Button
+            android:id="@+id/bt_send_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="发送邮件"
+            app:layout_constraintTop_toBottomOf="@+id/bt_scoped_storage_write" />
+
+        <Button
+            android:id="@+id/bt_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="获取语言地区"
+            app:layout_constraintTop_toBottomOf="@+id/bt_send_email" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layout_lin1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/bt_area"
+            tools:ignore="MissingConstraints">
+
+            <Button
+                android:id="@+id/bt_save"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="保存" />
+
+            <Button
+                android:id="@+id/bt_get"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="获取" />
 
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    <Button
-        android:id="@+id/bt_random"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="生成随机码"
-        app:layout_constraintTop_toBottomOf="@+id/layout_lin1" />
-    <Button
-        android:id="@+id/bt_key"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="生成公钥和私钥"
-        app:layout_constraintTop_toBottomOf="@+id/layout_lin1" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <me.zhanghai.android.materialratingbar.MaterialRatingBar
-        app:layout_constraintTop_toBottomOf="@+id/bt_key"
-        android:id="@+id/rating_bar"
-        style="@style/Widget.MaterialRatingBar.RatingBar.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:numStars="5"
-        android:paddingTop="15dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:progressTint="#EBCD00"
-        android:progressBackgroundTint="#DBDBDB"
-        app:mrb_fillBackgroundStars="true"
-        android:rating="0"
-        android:stepSize="1"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/bt_random"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="生成随机码"
+            app:layout_constraintTop_toBottomOf="@+id/layout_lin1" />
+
+        <Button
+            android:id="@+id/bt_key"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="生成公钥和私钥"
+            app:layout_constraintTop_toBottomOf="@+id/layout_lin1" />
+
+        <me.zhanghai.android.materialratingbar.MaterialRatingBar
+            android:id="@+id/rating_bar"
+            style="@style/Widget.MaterialRatingBar.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:numStars="5"
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:progressBackgroundTint="#DBDBDB"
+            android:progressTint="#EBCD00"
+            android:rating="0"
+            android:stepSize="1"
+            app:layout_constraintTop_toBottomOf="@+id/bt_key"
+            app:mrb_fillBackgroundStars="true"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/bt_start_recorder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="录屏开始"
+            app:layout_constraintTop_toBottomOf="@+id/rating_bar" />
+
+        <Button
+            android:id="@+id/bt_stop_recorder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="录屏停止"
+            app:layout_constraintTop_toBottomOf="@+id/bt_start_recorder" />
+
+        <Button
+            android:id="@+id/bt_device_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="获取设备id"
+            app:layout_constraintTop_toBottomOf="@+id/bt_stop_recorder" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

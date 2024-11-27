@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         encryptPath = BASE_URL + "encryption_" + file_name
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setPermission()
+//        setPermission()
         Log.d("MainActivity", ((7000.00.toDouble() / 1000000)).toString())
         Log.d("MainActivity", "androidId=${getUniqueId(this)}")
         val pattern: Pattern = Pattern.compile("^[0|-]+$")

@@ -2,6 +2,7 @@ package com.example.stan.jnitest
 
 import android.app.Application
 import com.example.stan.jnitest.utils.CrashHandler
+import org.OpenUDID.OpenUDID_manager
 
 /**
  * @Author Stan
@@ -18,5 +19,6 @@ class MyApplication : Application() {
         instance = this
         val crashHandler = CrashHandler.getInstance()
         crashHandler.init(this)
+        OpenUDID_manager.sync(this);
     }
 }

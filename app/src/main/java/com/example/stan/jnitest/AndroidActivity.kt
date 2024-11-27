@@ -24,21 +24,14 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.example.stan.jnitest.android.view.MyAppWidgetProvider
 import com.example.stan.jnitest.databinding.ActivityAndroidBinding
 import com.example.stan.jnitest.mvvm.test.MVVMTestActivity
+import com.example.stan.jnitest.recorder.RecorderSetting
 import com.example.stan.jnitest.utils.AssetsFileUtils
 import com.example.stan.jnitest.utils.TestUtils
-import com.example.stan.jnitest.utils.datastore.preferences.EXAMPLE_COUNTER
 import com.example.stan.jnitest.utils.datastore.preferences.EasyDataStore
-import com.example.stan.jnitest.utils.datastore.preferences.PDSUtils
-import com.example.stan.jnitest.utils.datastore.preferences.PDSUtils.exampleCounterFlow
-import com.example.stan.jnitest.utils.datastore.preferences.PDSUtils.incrementCounter
-import com.example.stan.jnitest.utils.datastore.preferences.dataStore
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
+import org.OpenUDID.OpenUDID_manager
 import org.json.JSONException
 import org.json.JSONObject
 import java.math.BigInteger
@@ -49,21 +42,23 @@ import kotlin.concurrent.thread
 class AndroidActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAndroidBinding
     private lateinit var myAppWidgetProvider: MyAppWidgetProvider
-    private final val LOG_TAG = "AndroidActivity"
+    private val LOG_TAG = "AndroidActivity"
+    private lateinit var recorderSetting: RecorderSetting
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAndroidBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        recorderSetting = RecorderSetting(this)
         binding.constraint.setBackgroundResource(TestUtils.getDrawable(this))
         binding.btView.setOnClickListener {
 //            val intent = Intent(this, CustomizeActivity::class.java)
 //            startActivity(intent)
-            packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+            packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
             val intent: Intent? =
                 packageManager.getLaunchIntentForPackage("com.supertapx.lovedots.vivo") //这里参数就是你要打开的app的包名
-            intent!!.putExtra("KEY", "");
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
+            intent!!.putExtra("KEY", "")
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
 //            val intent = Intent(Intent.ACTION_MAIN)
 //            /**知道要跳转应用的包命与目标Activity*/
@@ -83,7 +78,11 @@ class AndroidActivity : AppCompatActivity() {
         val intentFilter = IntentFilter()
         intentFilter.addAction("com.example.stan.jnitest.android.view.action.CLICK")
         myAppWidgetProvider = MyAppWidgetProvider()
-        registerReceiver(myAppWidgetProvider, intentFilter)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(myAppWidgetProvider, intentFilter, RECEIVER_EXPORTED)
+        } else {
+            registerReceiver(myAppWidgetProvider, intentFilter)
+        }
         binding.btAnim.setBackgroundColor(0xFFFF8080.toInt())
         binding.btAnim.setOnClickListener { it ->
 
@@ -139,8 +138,8 @@ class AndroidActivity : AppCompatActivity() {
         binding.btThreadLocal.setOnClickListener {
             val mBooleanThreadLocal = ThreadLocal<Boolean>()
             mBooleanThreadLocal.set(true)
-            Log.i(LOG_TAG, "[Thread#main]mBooleanThreadLocal=" + mBooleanThreadLocal.get())
             thread(name = "Thread#1") {
+                Log.i(LOG_TAG, "[Thread#main]mBooleanThreadLocal=" + mBooleanThreadLocal.get())
                 mBooleanThreadLocal.set(false)
                 Log.i(LOG_TAG, "[Thread#1]mBooleanThreadLocal=" + mBooleanThreadLocal.get())
             }
@@ -248,6 +247,29 @@ class AndroidActivity : AppCompatActivity() {
             Log.i(LOG_TAG, "公钥:$publicKey  ;私钥:$privateKey")
         }
 
+        binding.btStartRecorder.setOnClickListener {
+            recorderSetting.startRecorder()
+        }
+
+        binding.btStopRecorder.setOnClickListener {
+            recorderSetting.stopRecorder()
+        }
+
+        binding.btDeviceId.setOnClickListener {
+            var deviceId = OpenUDID_manager.getOpenUDID()
+            if (deviceId.isEmpty()) {
+                Log.i(LOG_TAG, "OpenUDID is null,get DeviceIdentifiers")
+                deviceId = TestUtils.generateDeviceIdentifiers()
+            }
+            Log.i(
+                LOG_TAG, "deviceId:${deviceId},android_id:${
+                    Settings.System.getString(
+                        contentResolver, Settings.System.ANDROID_ID
+                    )
+                },DeviceIdentifier:${TestUtils.generateDeviceIdentifiers()}"
+            )
+        }
+
     }
 
     private fun addBitmapToAlbum(bitmap: Bitmap, displayName: String) {
@@ -300,6 +322,7 @@ class AndroidActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(myAppWidgetProvider)
+        recorderSetting.onDestroy()
     }
 
     override fun onRequestPermissionsResult(
@@ -308,6 +331,12 @@ class AndroidActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        recorderSetting.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        recorderSetting.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onResume() {
