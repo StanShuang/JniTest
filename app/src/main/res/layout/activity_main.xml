@@ -13,11 +13,18 @@
         tools:ignore="ScrollViewSize"
         android:id="@+id/constraint">
         <Button
+            android:id="@+id/bt_aidl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="AIDL TEST"
+            tools:ignore="MissingConstraints" />
+        <Button
             android:id="@+id/bt_android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Android进阶"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toBottomOf="@+id/bt_aidl"/>
 
         <Button
             android:id="@+id/bt_jni_1"

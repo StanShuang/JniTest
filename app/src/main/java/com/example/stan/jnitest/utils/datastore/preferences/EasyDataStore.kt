@@ -31,7 +31,7 @@ object EasyDataStore {
     private val MyApplication.dataStore: DataStore<Preferences> by preferencesDataStore(name = USER_PREFERENCES_NAME)
 
     //dataStore变量
-    val dataStore = MyApplication.instance.dataStore
+    private val dataStore = MyApplication.instance.dataStore
 
     private suspend fun putIntData(key: String, value: Int) = dataStore.edit {
         it[intPreferencesKey(key)] = value

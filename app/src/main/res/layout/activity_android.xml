@@ -176,6 +176,12 @@
             android:layout_height="wrap_content"
             android:text="获取设备id"
             app:layout_constraintTop_toBottomOf="@+id/bt_stop_recorder" />
+        <Button
+            android:id="@+id/bt_copy_file"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="拷贝资源到filedir"
+            app:layout_constraintTop_toBottomOf="@+id/bt_device_id" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,11 +8,17 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Looper;
 import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -84,6 +90,54 @@ public class AssetsFileUtils {
             }
         }
         return null;
+    }
+
+    /**
+     * @param context
+     * @param assetFileName 件相对路径-比如是assets/bin/config.json 只用传bin/config.json
+     * @param outputPath    getFileDir.getCanonicalPath
+     * @throws IOException
+     */
+    public static void copyAssetFile(Context context, String assetFileName, String outputPath) {
+        if (Looper.getMainLooper() == Looper.myLooper()) {
+            Runnable runnable = () -> copyAssetFile(context, assetFileName, outputPath);
+            new Thread(runnable).start();
+            return;
+        }
+        AssetManager assetManager = context.getAssets();
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        Exception exception = null;
+        try {
+            bis = new BufferedInputStream(assetManager.open(assetFileName));
+            File outputFile = new File(outputPath);
+            bos = new BufferedOutputStream(new FileOutputStream(outputFile));
+
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = bis.read(buffer)) != -1) {
+                bos.write(buffer, 0, read);
+            }
+            Log.d("AndroidActivity", "Copy file is success");
+        } catch (IOException e) {
+            exception = new Exception(e);
+        } finally {
+            try {
+                if (bis != null) {
+                    bis.close();
+                }
+                if (bos != null) {
+                    bos.close();
+                }
+            } catch (IOException e) {
+                exception = new Exception(e);
+            }
+        }
+        if (exception != null) {
+            exception.printStackTrace();
+            Log.d("AndroidActivity", "message is: " + exception.getMessage());
+        }
+
     }
 
     /**

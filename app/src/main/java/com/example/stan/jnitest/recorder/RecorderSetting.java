@@ -44,43 +44,53 @@ public class RecorderSetting {
     //获取录屏范围参数
     DisplayMetrics metrics;
 
+    private Intent captureIntent;
+
     public RecorderSetting(Activity activity) {
         this.mActivity = activity;
     }
 
     //权限检查，连接录屏服务
     public void checkPermission() {
-        if (Build.VERSION.SDK_INT >= 30) {
+        if (Build.VERSION.SDK_INT >= 33) {
             //调用检查权限接口进行权限检查
-            if ((ContextCompat.checkSelfPermission(mActivity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)) {
+            if ((ContextCompat.checkSelfPermission(mActivity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)) {
                 //如果没有权限，获取权限
                 //调用请求权限接口进行权限申请
-                ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.POST_NOTIFICATIONS,
+                ActivityCompat.requestPermissions(mActivity, new String[]{
+                        Manifest.permission.POST_NOTIFICATIONS
                 }, PERMISSION_REQUEST_CODE);
             } else {
                 //有权限，连接录屏服务，进行录屏
                 if (screenRecordService != null) {
-                    screenRecordService.startRecord();
+                    //将请求码作为标识一起发送，调用该接口，需有返回方法
+                    mActivity.startActivityForResult(captureIntent, REQUEST_CODE);
+                } else {
+                    connectService();
+                }
+            }
+        } else if (Build.VERSION.SDK_INT < 30) {
+            //调用检查权限接口进行权限检查
+            if ((ContextCompat.checkSelfPermission(mActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+                //如果没有权限，获取权限
+                //调用请求权限接口进行权限申请
+                ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE
+                }, PERMISSION_REQUEST_CODE);
+            } else {
+                //有权限，连接录屏服务，进行录屏
+                if (screenRecordService != null) {
+                    //将请求码作为标识一起发送，调用该接口，需有返回方法
+                    mActivity.startActivityForResult(captureIntent, REQUEST_CODE);
                 } else {
                     connectService();
                 }
             }
         } else {
-            //调用检查权限接口进行权限检查
-            if ((ContextCompat.checkSelfPermission(mActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) || (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)) {
-                //如果没有权限，获取权限
-                //调用请求权限接口进行权限申请
-                ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.RECORD_AUDIO,
-                }, PERMISSION_REQUEST_CODE);
+            if (screenRecordService != null) {
+                //将请求码作为标识一起发送，调用该接口，需有返回方法
+                mActivity.startActivityForResult(captureIntent, REQUEST_CODE);
             } else {
-                //有权限，连接录屏服务，进行录屏
-                if (screenRecordService != null) {
-                    screenRecordService.startRecord();
-                } else {
-                    connectService();
-                }
+                connectService();
             }
         }
 
@@ -90,10 +100,10 @@ public class RecorderSetting {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             //请求码相同
-            if (grantResults.length > 1 && ((grantResults[0] != PackageManager.PERMISSION_GRANTED) || (grantResults[1] != PackageManager.PERMISSION_GRANTED))) {
-                //如果结果都存在，但是至少一个没请求成功，弹出提示
-                Toast.makeText(mActivity, "请同意必须的应用权限，否则无法正常使用该功能！", Toast.LENGTH_SHORT).show();
-            } else if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+//            if (grantResults.length > 1 && ((grantResults[0] != PackageManager.PERMISSION_GRANTED) || (grantResults[1] != PackageManager.PERMISSION_GRANTED))) {
+//                //如果结果都存在，但是至少一个没请求成功，弹出提示
+//                Toast.makeText(mActivity, "请同意必须的应用权限，否则无法正常使用该功能！", Toast.LENGTH_SHORT).show();
+            if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(mActivity, "请同意必须的应用权限，否则无法正常使用该功能！", Toast.LENGTH_SHORT).show();
             } else {
                 //如果结果都存在，两个权限都申请成功，连接服务，启动录屏
@@ -124,7 +134,7 @@ public class RecorderSetting {
             //获取到服务，初始化录屏管理者
             mediaProjectionManager = (MediaProjectionManager) mActivity.getSystemService(MEDIA_PROJECTION_SERVICE);
             //通过管理者，创建录屏请求，通过Intent
-            Intent captureIntent = mediaProjectionManager.createScreenCaptureIntent();
+            captureIntent = mediaProjectionManager.createScreenCaptureIntent();
             //将请求码作为标识一起发送，调用该接口，需有返回方法
             mActivity.startActivityForResult(captureIntent, REQUEST_CODE);
         }
@@ -143,6 +153,7 @@ public class RecorderSetting {
             //录屏请求成功，使用工具MediaProjection录屏
             //从发送获得的数据和结果中获取该工具
             //录屏逻辑
+            screenRecordService.createNotification();
             mediaProjection = mediaProjectionManager.getMediaProjection(resultCode, data);//必须在通知显示之后调用
             MediaProjectionCallback mMediaProjectionCallback = new MediaProjectionCallback();
             mediaProjection.registerCallback(mMediaProjectionCallback, new Handler());
@@ -153,8 +164,11 @@ public class RecorderSetting {
                 metrics = new DisplayMetrics();
                 mActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
                 screenRecordService.setConfig(metrics.widthPixels, metrics.heightPixels, metrics.densityDpi);
-                screenRecordService.startRecord();
+                new Handler().postDelayed(() -> screenRecordService.startRecord(), 1000);
+
             }
+        } else if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_CANCELED) {
+            //未授予权限
         }
     }
 

@@ -29,6 +29,7 @@ import com.example.stan.jnitest.databinding.ActivityAndroidBinding
 import com.example.stan.jnitest.mvvm.test.MVVMTestActivity
 import com.example.stan.jnitest.recorder.RecorderSetting
 import com.example.stan.jnitest.utils.AssetsFileUtils
+import com.example.stan.jnitest.utils.EncryptUtils
 import com.example.stan.jnitest.utils.TestUtils
 import com.example.stan.jnitest.utils.datastore.preferences.EasyDataStore
 import org.OpenUDID.OpenUDID_manager
@@ -269,6 +270,19 @@ class AndroidActivity : AppCompatActivity() {
                 },DeviceIdentifier:${TestUtils.generateDeviceIdentifiers()}"
             )
         }
+        binding.btCopyFile.setOnClickListener {
+//            AssetsFileUtils.copyAssetFile(
+//                this,
+//                "Manifest.bytes",
+//                filesDir.canonicalPath + "/" + "Manifest.bytes"
+//            )
+//            val value = EncryptUtils.generate16DigitHexString(16)
+            val value = EncryptUtils.generate32DigitHexString()
+            val key = EncryptUtils.md5Hash(value)
+            Log.i(
+                LOG_TAG, "生成的随机16为：{$value};   生成的32位哈希值为：{$key}"
+            )
+        }
 
     }
 
@@ -344,9 +358,9 @@ class AndroidActivity : AppCompatActivity() {
         Log.i(LOG_TAG, "onResume()")
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        setIntent(intent)
-        Log.i(LOG_TAG, "onNewIntent：${intent.toString()}")
-    }
+//    override fun onNewIntent(intent: Intent?) {
+//        super.onNewIntent(intent)
+//        setIntent(intent)
+//        Log.i(LOG_TAG, "onNewIntent：${intent.toString()}")
+//    }
 }

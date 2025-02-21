@@ -59,7 +59,6 @@ public class ScreenRecordService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        createNotification();
     }
 
     @Override
@@ -168,12 +167,13 @@ public class ScreenRecordService extends Service {
 
     //初始化Recorder录像机
     public void initRecorder() {
-        CamcorderProfile mProfile = CamcorderProfile.get(CamcorderProfile.QUALITY_1080P);
+        CamcorderProfile mProfile = CamcorderProfile.get(CamcorderProfile.QUALITY_720P);
         //新建Recorder
         mediaRecorder = new MediaRecorder();
         //设置录像机的一系列参数
         //设置音频来源
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+//        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.REMOTE_SUBMIX);
         //设置视频来源
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         //设置视频格式为mp4
@@ -187,7 +187,7 @@ public class ScreenRecordService extends Service {
         //设置视频编码为H.264
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
         //设置音频编码
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+//        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         //设置视频码率
         mediaRecorder.setVideoEncodingBitRate(mProfile.videoBitRate);
         mediaRecorder.setVideoFrameRate(30);
@@ -266,7 +266,7 @@ public class ScreenRecordService extends Service {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
                 startForeground(NOTIFICATION_ID, notification);
             } else {
-                startForeground(NOTIFICATION_ID, notification,ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION);
+                startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION);
             }
             //notificationManager.notify(NOTIFICATION_ID, notification);
         }

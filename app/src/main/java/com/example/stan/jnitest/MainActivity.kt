@@ -28,6 +28,7 @@ import android.net.Uri
 import android.view.MotionEvent
 import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
 import androidx.annotation.RequiresApi
+import com.example.stan.jnitest.aidl.BookManagerActivity
 import com.example.stan.jnitest.utils.LightSettingUtil
 import com.example.stan.jnitest.utils.TestUtils
 import java.io.ObjectStreamClass
@@ -93,6 +94,12 @@ class MainActivity : AppCompatActivity() {
 //        binding.sampleText.text = JniNative.stringFromJNI()
         val jniNative = JniNative()
         val jniBitmapAction = JniBitmapAction()
+
+        binding.btAidl.setOnClickListener {
+            val intent = Intent(this, BookManagerActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.btJni1.setOnClickListener {
 //            jniNative.accessField()
 //            binding.sampleText.text = "after:" + jniNative.showText
@@ -272,18 +279,18 @@ class MainActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        setIntent(intent)
-        Log.d("MainActivity", "onNewIntent:${intent.toString()}")
-        // ATTENTION: This was auto-generated to handle app links.
-        val appLinkIntent: Intent = intent!!
-        val appLinkAction: String? = appLinkIntent.action
-        val appLinkData: Uri? = appLinkIntent.data
-        if (appLinkData != null) {
-            val recipeId = appLinkData.lastPathSegment
-        }
-    }
+//    override fun onNewIntent(intent: Intent?) {
+//        super.onNewIntent(intent)
+//        setIntent(intent)
+//        Log.d("MainActivity", "onNewIntent:${intent.toString()}")
+//        // ATTENTION: This was auto-generated to handle app links.
+//        val appLinkIntent: Intent = intent!!
+//        val appLinkAction: String? = appLinkIntent.action
+//        val appLinkData: Uri? = appLinkIntent.data
+//        if (appLinkData != null) {
+//            val recipeId = appLinkData.lastPathSegment
+//        }
+//    }
 
     private var pseudoId: String? = null
     fun getUniqueId(context: Context): String? {
