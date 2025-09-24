@@ -284,6 +284,11 @@ class AndroidActivity : AppCompatActivity() {
             )
         }
 
+
+        binding.btRestart.setOnClickListener {
+            TestUtils.restartPackage(this)
+        }
+
     }
 
     private fun addBitmapToAlbum(bitmap: Bitmap, displayName: String) {

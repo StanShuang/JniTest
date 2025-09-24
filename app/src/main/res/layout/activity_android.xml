@@ -182,6 +182,13 @@
             android:layout_height="wrap_content"
             android:text="拷贝资源到filedir"
             app:layout_constraintTop_toBottomOf="@+id/bt_device_id" />
+        <Button
+            android:id="@+id/bt_restart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="android 重新启动"
+            app:layout_constraintTop_toBottomOf="@+id/bt_copy_file"
+            tools:ignore="MissingConstraints,NotSibling" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

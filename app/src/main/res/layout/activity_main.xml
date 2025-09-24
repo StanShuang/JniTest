@@ -192,6 +192,13 @@
             android:text="android音量相关"
             app:layout_constraintTop_toBottomOf="@+id/ll_bitmap"
             tools:ignore="MissingConstraints,NotSibling" />
+        <Button
+            android:id="@+id/bt_vibrator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="android震动相关"
+            app:layout_constraintTop_toBottomOf="@+id/bt_audio"
+            tools:ignore="MissingConstraints,NotSibling" />
 
         <TextView
             android:id="@+id/sampleText"

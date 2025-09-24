@@ -7,6 +7,8 @@
         <package android:name="com.android.vending" />
     </queries>
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -53,7 +55,7 @@
             android:exported="true"
             android:launchMode="singleTask" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.stan.jnitest.MainActivity"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>

@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     private val file_name = "testJni.txt"
     private lateinit var encryptPath: String
     private lateinit var lightSettingUtil: LightSettingUtil
+    private var mIsAppInBackground: Boolean = false
 
     //多个权限
     private val requestPermissionsLauncher =
@@ -184,6 +185,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AndroidActivity::class.java)
             startActivity(intent)
         }
+
+        binding.btVibrator.setOnClickListener {
+            TestUtils.impactFeedback("40|1")
+        }
     }
 
 
@@ -257,6 +262,17 @@ class MainActivity : AppCompatActivity() {
         Log.d("MainActivity", "onResume")
         lightSettingUtil.startSleepTask(lightSettingUtil.danyTime)
         lightSettingUtil.setLastTimeOnTouch()
+        if (!isChangingConfigurations) {
+            // 判断是否从后台返回
+            if (mIsAppInBackground) {
+                // 从后台返回的逻辑
+                mIsAppInBackground = false
+                Log.d("MainActivity", "从后台返回")
+            } else {
+                // 从其他 Activity 返回或初次启动
+                Log.d("MainActivity", "从其他 Activity 返回或初次启动")
+            }
+        }
     }
 
     override fun onStop() {
@@ -268,10 +284,12 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         Log.d("MainActivity", "onPause")
         lightSettingUtil.stopSleepTask()
+        if (!isChangingConfigurations && !isFinishing) {
+            mIsAppInBackground = true
+        }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        Log.d("MainActivity", "dispatchTouchEvent")
         lightSettingUtil.setLastTimeOnTouch()
         if (lightSettingUtil.currentLight.toInt() == 1) {
             lightSettingUtil.startSleepTask(lightSettingUtil.danyTime)

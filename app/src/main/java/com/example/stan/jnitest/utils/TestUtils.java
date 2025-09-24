@@ -1,5 +1,8 @@
 package com.example.stan.jnitest.utils;
 
+import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -8,10 +11,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Base64;
 import android.util.Log;
 
 import androidx.core.content.PackageManagerCompat;
+
+import com.example.stan.jnitest.MainActivity;
+import com.example.stan.jnitest.MyApplication;
 
 import java.math.BigDecimal;
 import java.security.KeyPair;
@@ -85,10 +93,10 @@ public class TestUtils {
     }
 
     public static String getStringValue() {
-        double value = 0.000035;
+        double value = Double.parseDouble("1.2E-4") / 10;
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDecimalSeparator('.');
-        DecimalFormat decimalFormat = new DecimalFormat("0.000000");
+        DecimalFormat decimalFormat = new DecimalFormat("0.00000000");
         decimalFormat.setDecimalFormatSymbols(symbols);
         return new BigDecimal(decimalFormat.format(value)).stripTrailingZeros().toPlainString();
     }
@@ -170,6 +178,75 @@ public class TestUtils {
                 Build.USER.length() % 10; //13 位
 
         return new UUID(devIdShort.hashCode(), Build.FINGERPRINT.hashCode()).toString();
+    }
+
+    public static void impactFeedback(String params) {
+        int intensity = 255;
+        long milliseconds = 40L;
+        String paramsString = params;
+        if (params.contains("|")) {
+            String[] paramArray = params.split("\\|");
+            milliseconds = Long.parseLong(paramArray[0]);
+            if (milliseconds < 80) {
+                milliseconds = 80L;
+            }
+            paramsString = paramArray[1];
+        }
+        if ("1".equals(paramsString)) {
+            intensity = 2;
+        } else if ("2".equals(paramsString)) {
+            intensity = 200;
+        } else if ("3".equals(paramsString)) {
+            intensity = 255;
+        }
+        Vibrator vibrator = (Vibrator) MyApplication.instance.getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator == null || !vibrator.hasVibrator()) {
+            return;
+        }
+        Log.d("MainActivity", "Vibration is start");
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                long[] pattern = {0, milliseconds}; // 暂停0ms，震动milliseconds
+                int[] amplitudes = {0, intensity};
+                vibrator.vibrate(VibrationEffect.createWaveform(pattern, amplitudes, -1)); // -1表示不重复
+//                VibrationEffect effect = VibrationEffect.createOneShot(milliseconds, intensity);
+//                vibrator.vibrate(effect);
+                Log.d("MainActivity", "Vibration is start  1");
+            } else {
+                vibrator.vibrate(milliseconds);
+                Log.d("MainActivity", "Vibration is start  2");
+            }
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+        }
+    }
+
+    public static void restartPackage(Context context){
+        Intent intent = new Intent(context, MainActivity.class);
+        int pendingIntentId = 123456; // 自定义请求码
+        PendingIntent pendingIntent;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getActivity(
+                    context,
+                    pendingIntentId,
+                    intent,
+                    PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE
+            );
+        } else {
+            pendingIntent = PendingIntent.getActivity(
+                    context,
+                    pendingIntentId,
+                    intent,
+                    PendingIntent.FLAG_CANCEL_CURRENT
+            );
+        }
+
+        AlarmManager alarmManager = (AlarmManager) MyApplication.instance.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pendingIntent);
+
+        // 结束当前进程
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(0);
     }
 
 }

@@ -189,7 +189,9 @@ public class RecorderSetting {
 
     //当应用结束的时候，需要解除绑定服务，防止造成内存泄漏
     public void onDestroy() {
-        mActivity.unbindService(serviceConnection);
+//        mActivity.unbindService(serviceConnection);
+
+
     }
 
     //Called when the MediaProjection session is no longer valid.
